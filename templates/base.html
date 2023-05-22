@@ -11,7 +11,10 @@
     <body>
         <div>
             <div class="header">
-                <h1>Django App Development</h1>
+                <a class="active" href="{% url 'index' %}">DJANGO</a>
+                <a href="{% url 'index' %}">HOME</a>
+                <a class="right" href="{% url 'app1:login' %}">LOGIN</a>
+                <a class="right" href="{% url 'app1:signup' %}">SIGNUP</a>
             </div>
             <div class="c2">
                 {% block b1 %}
