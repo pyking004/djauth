@@ -2,10 +2,52 @@ from django.shortcuts import render,HttpResponseRedirect
 # from django.contrib.auth.forms import UserCreationForm
 from app1.forms import SignupForm
 from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate,login,logout,get_user
+from django.contrib.auth.forms import (
+                    AuthenticationForm,
+                    PasswordChangeForm,
+                    SetPasswordForm
+                    )
+from django.contrib.auth import (
+                authenticate,
+                login,
+                logout,
+                get_user,
+                update_session_auth_hash
+                )
 
 # Create your views here.form 
+
+def changepwd2(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = SetPasswordForm(user=request.user,data=request.POST)
+            if form.is_valid():
+                form.save()
+                update_session_auth_hash(request,form.user)
+                messages.success(request,'Password Changed successfully!!')
+                return HttpResponseRedirect('/app1/profile')
+        else:
+            form = SetPasswordForm(user=request.user)
+        context = {'form':form,'name':request.user.username}
+        return render(request,'app1/changepwd2.html',context)
+    else:
+        return HttpResponseRedirect('/app1/login')
+
+def changepwd1(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = PasswordChangeForm(user=request.user,data=request.POST)
+            if form.is_valid():
+                form.save()
+                update_session_auth_hash(request,form.user)
+                messages.success(request,'Password Changed successfully!!')
+                return HttpResponseRedirect('/app1/profile')
+        else:
+            form = PasswordChangeForm(user=request.user)
+        context = {'form':form,'name':request.user.username}
+        return render(request,'app1/changepwd1.html',context)
+    else:
+        return HttpResponseRedirect('/app1/login')
 
 def userlogout(request):
     logout(request)

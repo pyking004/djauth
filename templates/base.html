@@ -14,6 +14,8 @@
                 {% if name %}
                 <a class="active" href="{% url 'index' %}">DJANGO</a>
                 <a href="{% url 'index' %}">HOME</a>
+                <a href="{% url 'app1:changepwd1' %}">ChangePwd1</a>
+                <a href="{% url 'app1:changepwd2' %}">ChangePwd2</a>
                 <a class="right" href="{% url 'app1:logout' %}">LOGOUT</a>
                 {% else %}
                 <a class="active" href="{% url 'index' %}">DJANGO</a>
