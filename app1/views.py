@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponseRedirect
 # from django.contrib.auth.forms import UserCreationForm
-from app1.forms import SignupForm
+from app1.forms import SignupForm,UpdateUserProfile
 from django.contrib import messages
 from django.contrib.auth.forms import (
                     AuthenticationForm,
@@ -16,6 +16,7 @@ from django.contrib.auth import (
                 )
 
 # Create your views here.form 
+
 
 def changepwd2(request):
     if request.user.is_authenticated:
@@ -55,7 +56,8 @@ def userlogout(request):
 
 def profile(request):
     if request.user.is_authenticated:
-        context = {'msg':'this is profile page','name':request.user.username}
+        form = UpdateUserProfile(instance=request.user)
+        context = {'form':form,'msg':'this is profile page','name':request.user.username}
         return render(request,'app1/profile.html',context)
     else:
         return HttpResponseRedirect('/app1/login')

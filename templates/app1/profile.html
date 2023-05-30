@@ -6,4 +6,16 @@
         <h3>{{message}} {{name}}</h3>
         {% endfor %}
     {% endif %}
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <p class="er">{{error}}</p>
+            {% endfor %}
+        {% endif %}
+        {% for field in form %}
+            {{field.label_tag}} {{field}} {{field.errors|striptags}} <br><br>
+        {% endfor %}
+        <input type="submit" value="Update">
+    </form>
 {% endblock b1 %}
