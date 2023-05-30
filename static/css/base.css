@@ -24,7 +24,5 @@
     text-align: center;
     background-color: aqua;
     color: red;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    position: relative;
 }

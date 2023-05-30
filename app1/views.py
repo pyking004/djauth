@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponseRedirect
 # from django.contrib.auth.forms import UserCreationForm
-from app1.forms import SignupForm,UpdateUserProfile
+from app1.forms import SignupForm,UpdateUserProfile,UpdateAdminProfile
 from django.contrib import messages
 from django.contrib.auth.forms import (
                     AuthenticationForm,
@@ -56,7 +56,19 @@ def userlogout(request):
 
 def profile(request):
     if request.user.is_authenticated:
-        form = UpdateUserProfile(instance=request.user)
+        if request.method == 'POST':
+            if request.user.is_superuser == True:
+                form = UpdateAdminProfile(request.POST,instance=request)
+            else:
+                form = UpdateUserProfile(request.POST,instance=request.user)
+            if form.is_valid():
+                form.save()
+                messages.success(request,'User Profile Updated')
+        else:
+            if request.user.is_superuser == True:
+                form = UpdateAdminProfile(instance=request.user)
+            else:
+                form = UpdateUserProfile(instance=request.user)
         context = {'form':form,'msg':'this is profile page','name':request.user.username}
         return render(request,'app1/profile.html',context)
     else:
