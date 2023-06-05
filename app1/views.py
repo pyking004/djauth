@@ -14,9 +14,18 @@ from django.contrib.auth import (
                 get_user,
                 update_session_auth_hash
                 )
+from django.contrib.auth.models import User
 
 # Create your views here.form 
 
+def userinfo(request,id):
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=id)
+        form = UpdateUserProfile(instance=user)
+        context = {'form':form,'name':request.user.username}
+        return render(request,'app1/userinfo.html',context)
+    else:
+        return HttpResponseRedirect('/app1/login')
 
 def changepwd2(request):
     if request.user.is_authenticated:
@@ -58,18 +67,25 @@ def profile(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
             if request.user.is_superuser == True:
-                form = UpdateAdminProfile(request.POST,instance=request)
+                form = UpdateAdminProfile(request.POST,instance=request.user)
+                users = User.objects.all()
             else:
                 form = UpdateUserProfile(request.POST,instance=request.user)
+                users = None
             if form.is_valid():
                 form.save()
                 messages.success(request,'User Profile Updated')
         else:
             if request.user.is_superuser == True:
                 form = UpdateAdminProfile(instance=request.user)
+                users = User.objects.all()
             else:
                 form = UpdateUserProfile(instance=request.user)
-        context = {'form':form,'msg':'this is profile page','name':request.user.username}
+                users = None
+        context = {'form':form,
+                   'msg':'this is profile page',
+                   'name':request.user.username,
+                   'users':users}
         return render(request,'app1/profile.html',context)
     else:
         return HttpResponseRedirect('/app1/login')
