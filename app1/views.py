@@ -1,4 +1,5 @@
 from django.shortcuts import render,HttpResponseRedirect
+from django.http import HttpResponse
 # from django.contrib.auth.forms import UserCreationForm
 from app1.forms import SignupForm,UpdateUserProfile,UpdateAdminProfile
 from django.contrib import messages
@@ -18,12 +19,16 @@ from django.contrib.auth.models import User
 
 # Create your views here.form 
 
+
 def userinfo(request,id):
     if request.user.is_authenticated:
-        user = User.objects.get(pk=id)
-        form = UpdateUserProfile(instance=user)
-        context = {'form':form,'name':request.user.username}
-        return render(request,'app1/userinfo.html',context)
+            if request.user.is_superuser == True:
+                user = User.objects.get(pk=id)
+                form = UpdateUserProfile(instance=user)
+                context = {'form':form,'name':request.user.username}
+                return render(request,'app1/userinfo.html',context)
+            else:
+                return HttpResponse("<h1>You can not see others profile</h1>")
     else:
         return HttpResponseRedirect('/app1/login')
 

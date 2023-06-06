@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 {% block b1 %}
-    <h1>User Information: </h1>
+    <h2>{{msg}}</h2>
+    {% if users != None %}
+        <h2>List of Users</h2>
+        {% for user in users %}
+           <a href="{% url 'app1:userinfo' user.id %}">{{user.username}}</a> <br><br>
+        {% endfor %}
+    {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+        <h3>{{message}} {{name}}</h3>
+        {% endfor %}
+    {% endif %}
     <form method="post" novalidate>
         {% csrf_token %}
         {% if form.non_field_errors %}

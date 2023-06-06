@@ -14,7 +14,7 @@ class UpdateUserProfile(UserChangeForm):
     password = None
     class Meta:
         model = User
-        fields = ['username','first_name','last_name','email','date_joined','last_login']
+        fields = ['username','first_name','last_name','email','groups','date_joined','last_login']
         labels = {'email':'Email'}
 
 class UpdateAdminProfile(UserChangeForm):

@@ -11,12 +11,19 @@
     <body>
         <div>
             <div class="header">
-                {% if name %}
+                {% if name == "admin" %}
                 <a class="active" href="{% url 'index' %}">DJANGO</a>
                 <a href="{% url 'index' %}">HOME</a>
                 <a href="{% url 'app1:changepwd1' %}">ChangePwd1</a>
                 <a href="{% url 'app1:changepwd2' %}">ChangePwd2</a>
                 <a href="{% url 'app1:login' %}">Users</a>
+                <a href="{% url 'app1:login' %}">Myprofile</a>
+                <a class="right" href="{% url 'app1:logout' %}">LOGOUT</a>
+                {% elif name %}
+                <a class="active" href="{% url 'index' %}">DJANGO</a>
+                <a href="{% url 'index' %}">HOME</a>
+                <a href="{% url 'app1:changepwd1' %}">ChangePwd1</a>
+                <a href="{% url 'app1:changepwd2' %}">ChangePwd2</a>
                 <a href="{% url 'app1:login' %}">Myprofile</a>
                 <a class="right" href="{% url 'app1:logout' %}">LOGOUT</a>
                 {% else %}
